@@ -1310,3 +1310,15 @@
 [0mGET /api/v1/products [36m304[0m 62.288 ms - -[0m
 [0mGET /api/v1/cart [32m200[0m 79.687 ms - 59[0m
 [0mPOST /api/v1/cart/place-order [32m200[0m 117.521 ms - 19[0m
+[0mGET /api/v1/cart [32m200[0m 26.063 ms - 2[0m
+[0mGET /api/v1/cart [36m304[0m 8.442 ms - -[0m
+[0mGET /NaN [33m404[0m 3.153 ms - 142[0m
+[0mGET /api/v1/cart [36m304[0m 4.565 ms - -[0m
+[0mGET /api/v1/products [36m304[0m 87.844 ms - -[0m
+[0mGET /api/v1/cart [36m304[0m 92.397 ms - -[0m
+[0mPOST /api/v1/cart/update [32m200[0m 33.953 ms - 20[0m
+[0mGET /NaN [33m404[0m 0.715 ms - 142[0m
+[0mGET /api/v1/cart [32m200[0m 4.879 ms - 30[0m
+[0mPOST /api/v1/cart/place-order [32m200[0m 80.694 ms - 19[0m
+[0mGET /api/v1/invoice/ [32m200[0m 11.064 ms - 53[0m
+[0mPOST /api/v1/invoice/generate-invoice [32m200[0m 2896.809 ms - 50319[0m

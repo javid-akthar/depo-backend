@@ -13,11 +13,18 @@ module.exports.getProducts =async function(req, res){
         return res.json(obj);
     }catch(err){
         console.log(err);
+
     }
 }
 
 module.exports.addProducts =async function(req, res){
 
-    await Products.deleteMany({});
+    try{
+        await Products.deleteMany({});
     let product = await Products.create(productsData);
+    return res.json(product);
+    }catch(err){
+        return res.json({status: "failure"});
+    }
+    
 }
