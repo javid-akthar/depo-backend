@@ -71,12 +71,13 @@ module.exports.invoiceGenerator = async function (req, res) {
             '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>', 
           last: "Last Page",
         },
-      },
-      childProcessOptions: {
-        env: {
-          OPENSSL_CONF: '/dev/null',
-        },
       }
+      // ,
+      // childProcessOptions: {
+      //   env: {
+      //     OPENSSL_CONF: '/dev/null',
+      //   },
+      // }
     };
     const toWords = new ToWords({
       localeCode: "en-IN",
