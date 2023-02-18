@@ -3,6 +3,7 @@ const Products = require("../../../models/products");
 const CartItem = require("../../../models/CartItem");
 const OrderSummary = require("../../../models/OrderSummary");
 const InvoiceNumber = require("../../../models/invoiceNumber");
+const orderSummaryController = require("./order_summary_controller");
 
 module.exports.update = async function (req, res) {
   try {
@@ -25,9 +26,9 @@ module.exports.update = async function (req, res) {
         { quantity: count }
       );
       return res.json({ status: "success" });
-    }else{
-        await CartItem.create({productId : req.body.productId, quantity: 1});
-        return res.json({ status: "success" });
+    } else {
+      await CartItem.create({ productId: req.body.productId, quantity: 1 });
+      return res.json({ status: "success" });
     }
   } catch (err) {
     console.log(err);
@@ -58,25 +59,20 @@ module.exports.delete = async function (req, res) {
   }
 };
 
-module.exports.getCartItems = async function(req, res){
-    try{
-        let cartList = await CartItem.find({});
-        // .populate("productId");
-        let obj = {};
-        for(let i=0; i<cartList.length; i++){
-            console.log(cartList[i]);
-            let prop = cartList[i].productId.toString();
-            console.log("prop",prop)
-            obj[prop] = cartList[i].quantity;
-        }
-        return res.json(obj)
-    }catch(err){
-        console.log(err);
-        return res.json({ status: "failure" });
-    }     
-    
-
-}
+module.exports.getCartItems = async function (req, res) {
+  try {
+    let cartList = await CartItem.find({});
+    let obj = {};
+    for (let i = 0; i < cartList.length; i++) {
+      let prop = cartList[i].productId.toString();
+      obj[prop] = cartList[i].quantity;
+    }
+    return res.json(obj);
+  } catch (err) {
+    console.log(err);
+    return res.json({ status: "failure" });
+  }
+};
 
 module.exports.placeOrder = async function (req, res) {
   console.log("req.body", req.body);
@@ -103,36 +99,46 @@ module.exports.placeOrder = async function (req, res) {
     let priceWithoutGst = 0;
     let CGST9 = 0;
     let SGST9 = 0;
-    console.log('orderItemDetails',orderItemDetails);
-    for(let i=0; i<orderItemDetails.length; i++){
-        let productId =  orderItemDetails[i].productId;
-        let quantity = orderItemDetails[i].quantity;
-        let product = await Products.findById(productId);
-        console.log("a",product)
-        console.log("b",product.mrp)
-        console.log("c",product.mrp.toString())
-        console.log("d",parseFloat(product.mrp.toString()));
-        let gst = parseFloat(product.gst_slab.toString())
-        let price = parseFloat(product.mrp.toString()) *  quantity;
-        priceWithoutGst += price;
-         price = price + (price /100 ) * gst;
-        console.log("price",price);
-        sum += price;
-        req.body.orderItemDetails[i].price = parseFloat(price).toFixed(2);
-        req.body.orderItemDetails[i].cgstPer = (parseFloat(product.gst_slab.toString()) / 2).toFixed(2);
-        req.body.orderItemDetails[i].cgstAmt = ((price/100) * (parseFloat(product.gst_slab.toString()) / 2)).toFixed(2) ;
-        req.body.orderItemDetails[i].sgstPer = (parseFloat(product.gst_slab.toString()) / 2).toFixed(2);
-        req.body.orderItemDetails[i].sgstAmt = ((price/100) * (parseFloat(product.gst_slab.toString()) / 2)).toFixed(2) ;
-        // req.body.orderItemDetails[i].priceWithoutGst = (priceWithoutGst).toFixed(2)
+    console.log("orderItemDetails", orderItemDetails);
+    for (let i = 0; i < orderItemDetails.length; i++) {
+      let productId = orderItemDetails[i].productId;
+      let quantity = orderItemDetails[i].quantity;
+      let product = await Products.findById(productId);
+      console.log("a", product);
+      console.log("b", product.mrp);
+      console.log("c", product.mrp.toString());
+      console.log("d", parseFloat(product.mrp.toString()));
+      let gst = parseFloat(product.gst_slab.toString());
+      let price = parseFloat(product.mrp.toString()) * quantity;
+      priceWithoutGst += price;
+      price = price + (price / 100) * gst;
+      console.log("price", price);
+      sum += price;
+      req.body.orderItemDetails[i].price = parseFloat(price).toFixed(2);
+      req.body.orderItemDetails[i].cgstPer = (
+        parseFloat(product.gst_slab.toString()) / 2
+      ).toFixed(2);
+      req.body.orderItemDetails[i].cgstAmt = (
+        (price / 100) *
+        (parseFloat(product.gst_slab.toString()) / 2)
+      ).toFixed(2);
+      req.body.orderItemDetails[i].sgstPer = (
+        parseFloat(product.gst_slab.toString()) / 2
+      ).toFixed(2);
+      req.body.orderItemDetails[i].sgstAmt = (
+        (price / 100) *
+        (parseFloat(product.gst_slab.toString()) / 2)
+      ).toFixed(2);
+      // req.body.orderItemDetails[i].priceWithoutGst = (priceWithoutGst).toFixed(2)
     }
-    req.body.sum = (sum).toFixed(2);
+    req.body.sum = sum.toFixed(2);
     req.body.cgst9 = ((sum / 100) * 9).toFixed(2);
     req.body.sgst9 = ((sum / 100) * 9).toFixed(2);
     req.body.priceWithoutGst = priceWithoutGst.toFixed(2);
     let orderSummary = await OrderSummary.create(req.body);
 
-    if(orderSummary){
-        await CartItem.deleteMany({});
+    if (orderSummary) {
+      await CartItem.deleteMany({});
     }
 
     await InvoiceNumber.deleteMany({});
@@ -140,8 +146,7 @@ module.exports.placeOrder = async function (req, res) {
       previousInvoiceNumber: invoiceNumber.previousInvoiceNumber + 1,
     });
 
-
-    return res.json({ status: "success" });
+    return res.json({ id: invoiceId });
   } catch (err) {
     console.log(err);
     return res.json({ status: "failure" });

@@ -18,7 +18,6 @@ module.exports.getProducts =async function(req, res){
 
 module.exports.addProducts =async function(req, res){
 
-    // await Products.deleteMany({});
-    // console.log("productsData",productsData);
-    // let product = await Products.create(productsData);
+    await Products.deleteMany({});
+    let product = await Products.create(productsData);
 }

@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const InvoiceNumber = require("../../../models/invoiceNumber");
 const OrderSummary = require("../../../models/OrderSummary");
 const pdf = require("pdf-creator-node");
-// const pdf = require('html-pdf')
 const fs = require("fs");
 const path = require("path");
 const { ToWords } = require("to-words");
@@ -41,6 +40,14 @@ module.exports.invoiceGenerator = async function (req, res) {
       populate: { path: "productId" },
     });
     orderSummary = orderSummary.toJSON();
+    console.log('orderSummarydata',orderSummary.createdAt);
+    let enterDate = orderSummary.createdAt
+    let date = new Date(enterDate);  
+    let day = date.getDate();
+    let month = date.getMonth()+1;
+    let year = date.getFullYear();
+    let orderDate = day + "/" + month +"/" + year;
+    console.log(month+"/"+day+"/"+year)
     let filename = null;
   try {
     let html = fs.readFileSync(
@@ -59,9 +66,9 @@ module.exports.invoiceGenerator = async function (req, res) {
         height: "28mm",
         contents: {
           first: "Cover page",
-          2: "Second page", // Any page number is working. 1-based index
+          2: "Second page", 
           default:
-            '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>', // fallback value
+            '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>', 
           last: "Last Page",
         },
       },
@@ -74,7 +81,6 @@ module.exports.invoiceGenerator = async function (req, res) {
         ignoreZeroCurrency: false,
         doNotAddOnly: false,
         currencyOptions: {
-          // can be used to override defaults for the selected locale
           name: "Rupee",
           plural: "Rupees",
           symbol: "₹",
@@ -99,19 +105,25 @@ module.exports.invoiceGenerator = async function (req, res) {
         billingAddress: orderSummary.billingAddress,
         shippingAddress: orderSummary.shippingAddress,
         orderSummary: orderSummary,
+        orderDate : orderDate
       },
-      path: "./output" + output + ".pdf",
+      path: "./uploads/" + output ,
       type: "",
     };
 
+    var files = fs.readdirSync(path.join(__dirname, '../../../uploads'));
+    if (files.length > 0)
+      for (file of files) {
+        var filePath = path.join(__dirname, '../../../uploads', file);
+        if (fs.statSync(filePath).isFile())
+          fs.unlinkSync(filePath);
+      }
     pdf
       .create(document, options)
       .then((response) => {
-        // console.log("res",res);
         console.log("response",response)
         let filename = response.filename;
         console.log('filename2',filename)
-        // return filename;
         return res.sendFile(response.filename);
       })
       .catch((error) => {
@@ -120,14 +132,6 @@ module.exports.invoiceGenerator = async function (req, res) {
   } catch (err) {
     console.log(err);
   }
-  // return res.sendFile(filename);
-    // let filename = await pdfCreation(orderSummary);
-    // console.log('filename',filename);
-    // return res.sendFile(filename);
-
-    
-
-    // return res.json({ status: "success" });
   } catch (err) {
     console.log(err);
     return res.json({ status: "failure" });
@@ -143,22 +147,18 @@ function pdfCreation2(orderSummary) {
   let output = Date.now() + "output.pdf";
   pdf.create(html, options).toFile(output, function (err, response) {
     if (err) return console.log(err);
-    console.log(response.filename); // { filename: '/app/businesscard.pdf' }
+    console.log(response.filename); 
 
     res.download(response.filename, () => {});
   });
 }
 
 function  pdfCreation(orderSummary) {
-  // D:\depo24\depo24BackEnd\controllers\api\v1\order_summary_controller.js
-  // D:\depo24\depo24BackEnd\invoice.html
-  // Read HTML Template
   try {
     let html = fs.readFileSync(
       path.join(__dirname + "../../../../invoice.html"),
       "utf8"
     );
-    // console.log(html);
     let output = Date.now() + "output.pdf";
     var options = {
       format: "A4",
@@ -166,22 +166,19 @@ function  pdfCreation(orderSummary) {
       border: "10mm",
       header: {
         height: "10mm",
-        // contents: '<div style="text-align: center;">Author: Shyam Hajare</div>'
       },
       footer: {
         height: "28mm",
         contents: {
-          first: "Cover page",
-          2: "Second page", // Any page number is working. 1-based index
+          first: "",
+          2: "Second page", 
           default:
-            '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>', // fallback value
-          last: "Last Page",
+            '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>',
+          last: "",
         },
       },
     };
 
-    // var orderSummar = [];
-    //  let orderItemDetails = JSON.parse(orderSummary.orderItemDetails);
 
     const toWords = new ToWords({
       localeCode: "en-IN",
@@ -191,7 +188,6 @@ function  pdfCreation(orderSummary) {
         ignoreZeroCurrency: false,
         doNotAddOnly: false,
         currencyOptions: {
-          // can be used to override defaults for the selected locale
           name: "Rupee",
           plural: "Rupees",
           symbol: "₹",
@@ -224,12 +220,9 @@ function  pdfCreation(orderSummary) {
     pdf
       .create(document, options)
       .then((res) => {
-        // console.log("res",res);
         console.log("response",res)
         let filename = res.filename;
-        console.log('filename2',filename)
         return filename;
-        // response.sendFile(res.filename);
       })
       .catch((error) => {
         console.error(error);
