@@ -56,7 +56,7 @@ module.exports.invoiceGenerator = async function (req, res) {
     );
     let output = Date.now() + "output.pdf";
     var options = {
-      format: "A4",
+      format: "A3",
       orientation: "portrait",
       border: "10mm",
       header: {
@@ -72,12 +72,12 @@ module.exports.invoiceGenerator = async function (req, res) {
           last: "Last Page",
         },
       }
-      // ,
-      // childProcessOptions: {
-      //   env: {
-      //     OPENSSL_CONF: '/dev/null',
-      //   },
-      // }
+      ,
+      childProcessOptions: {
+        env: {
+          OPENSSL_CONF: '/dev/null',
+        },
+      }
     };
     const toWords = new ToWords({
       localeCode: "en-IN",
