@@ -56,7 +56,7 @@ module.exports.invoiceGenerator = async function (req, res) {
     );
     let output = Date.now() + "output.pdf";
     var options = {
-      format: "A3",
+      format: "Letter",
       orientation: "portrait",
       border: "10mm",
       header: {
