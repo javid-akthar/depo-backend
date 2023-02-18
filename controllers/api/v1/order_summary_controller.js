@@ -111,15 +111,14 @@ module.exports.invoiceGenerator = async function (req, res) {
       type: "",
     };
 
-    var files = fs.readdirSync(path.join(__dirname, '../../../uploads'));
-    if (files.length > 0)
-      for (file of files) {
-        var filePath = path.join(__dirname, '../../../uploads', file);
-        if (fs.statSync(filePath).isFile())
-          fs.unlinkSync(filePath);
-      }
-    pdf
-      .create(document, options)
+    // var files = fs.readdirSync(path.join(__dirname, '../../../uploads'));
+    // if (files.length > 0)
+    //   for (file of files) {
+    //     var filePath = path.join(__dirname, '../../../uploads', file);
+    //     if (fs.statSync(filePath).isFile())
+    //       fs.unlinkSync(filePath);
+    //   }
+    pdf.create(document, options)
       .then((response) => {
         console.log("response",response)
         let filename = response.filename;
