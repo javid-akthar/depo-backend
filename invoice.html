@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+  padding: 0px;
+  box-sizing: border-box;
+  line-height: 3px;
+  /* border-collapse: collapse; */
+}
+#company-details {
+  line-height: 1px;
+}
+
+#company-details h3 {
+  line-height: 6px;
+}
+
+#company-details > div {
+  display: inline-block;
+}
+
+#company-logo img {
+  height: 58px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%
+}
+
+table, td, th {
+  border: 1px solid black;
+}
+
+#invoice-customer-details{
+    padding: 5px;
+}
+
+#invoice-customer-details > td{
+    width: 50%
+}
+
+#item-description-data{
+    width: 350px;
+    line-height: 19px;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+#order-details{
+    text-align: center;
+}
+.idAndDate{
+  display: inline-block;
+    width: 48%;
+}
+
+.idAndDate p{
+    padding-left: 3px;
+}
+
+.leftPadding{
+    padding-left: 3px;
+}
+
+.topHeader{
+  display: inline-block;
+  /* width: 32%; */
+  padding: 10px 30px 29px 30px;
+  /* border: 1px solid black; */
+}
+
+.performaHeader{
+padding: 0px 0px 0px 0px;
+    position: absolute;
+    top: 126px;
+    right: 60px;
+    font-size: 26px
+} 
+
+#amount-in-words{
+  border: 1px solid black;
+    height: 200px;
+    width: 60%;
+    display: inline-block;
+    border-top:0px;
+    /* position: relative;
+    top: -58px; */
+}
+
+#calculationAndSignature{
+  border: 1px solid black;
+  height: 200px;
+  width: 39.9%;
+  display: inline-block;
+  /* position: relative;
+    top: -108px; */
+   float: right;
+   border-left:0px;
+}
+
+#amount-details{
+  height: 50%;
+  border-bottom: 1px solid black;
+}
+
+#signature-details{
+  height : 48%;
+  /* border: 1px solid brown; */
+}
+
+#amount-heading, #amount-value{
+    width:80px;
+  /* border: 1px solid black; */
+  height: 99%;
+  display: inline-block;
+  position: relative;
+  border-bottom: 0px;
+  border-top: 0px;
+  
+}
+
+#amount-heading{
+    left: 209px;
+}
+#amount-value{
+  left: 250px;
+  border-right: 0px;
+}
+#authorized-signature{
+    position: relative;
+    bottom: -62px;
+    left: 145px
+}
+
+#customer-greeting{
+    position : relative;
+    bottom: -75px;
+}
+    </style>
+</head>
+<body>
+    <div id="company-details">
+
+        <!-- D:\depo24\depo24BackEnd\LOGO-color.avif -->
+    <div id="company-logo" class="topHeader" style="width: 22%; height: 129px">
+        <img src="https://cdn.shopify.com/s/files/1/0566/3182/0333/files/LOGO-color.png?v=1647674394" alt="">
+    </div>
+    <div id="company-details" class="topHeader">
+        <h3>Depo Solutions Private Limited</h3>
+        <p>77/1/A, Christopher Road, Topsia,</p>
+        <p>Kolkata - 700046</p>
+        <p>West Bengal</p>
+        <p>GSTIN: 19AAJCD1058P1Z4</p>
+    </div>
+    <div id="invoice-name" class="performaHeader">
+        <h1>Proforma Invoice</h1>
+    </div>
+
+</div>
+
+    <table id="invoice-customer-details">
+        <tr>
+            <td>
+                <div class="idAndDate">
+                    <p>#</p>
+                    <p>Estimate Date <p>
+                </div>
+                <div class="idAndDate">
+                    <p>: {{orderSummary.invoiceId}}</p>
+                    <p>: 30/01/2023</p>
+                </div>
+
+            </td>
+            <td>
+                <div class="idAndDate">
+                    <p>Place of supply</p>
+                </div>
+                <div class="idAndDate">
+                    <p>: West Bengal (19)</p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p class="leftPadding">Bill to</p>
+            </td>
+            <td>
+                <p class="leftPadding">Ship to</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3 class="leftPadding">{{billingAddress.name}}</h3>
+                <p class="leftPadding">{{billingAddress.flatNoOrBuildingName}} , {{billingAddress.locality}}</p>
+                <p class="leftPadding">{{billingAddress.city}}</p>
+                <p class="leftPadding">{{billingAddress.state}} - {{billingAddress.pincode}}</p>
+                <p class="leftPadding">{{billingAddress.gstin}}</p>
+            </td>
+            <td>
+                <h3 class="leftPadding">{{shippingAddress.name}}</h3>
+                <p class="leftPadding">{{shippingAddress.flatNoOrBuildingName}} , {{shippingAddress.locality}}</p>
+                <p class="leftPadding">{{shippingAddress.city}}</p>
+                <p class="leftPadding">{{shippingAddress.state}} - {{shippingAddress.pincode}}</p>
+                <p class="leftPadding">{{shippingAddress.gstin}}</p>
+            </td>
+        </tr>
+    </table>
+
+    <table id="order-details">
+        
+        <tr>
+            <th rowspan="1" style="border-bottom:0px; width:20px;">
+                <p>#</p>
+            </th>
+            <th rowspan="1" style="border-bottom:0px">
+                <p>Item & Description</p>
+            </th>
+            <th rowspan="1" style="border-bottom:0px">
+                <p>HSN/SAC</p>
+            </th>
+            <th rowspan="1" style="border-bottom:0px">
+                <p>Qty</p>
+            </th>
+            <th rowspan="1" style="border-bottom:0px">
+                <p>Rate</p>
+            </th>
+            <th rowspan="1" style="border-bottom:0px">
+                <p>Discount</p>
+            </th>
+            <th colspan="2">
+                <p>CGST</p>
+            </th>
+            <th colspan="2">
+                <p>SGST</p>
+            </th>
+            <th rowspan="2">
+                <p>Amount</p>
+            </th>
+        </tr>
+    
+
+        <tr>
+            <th style="border-top:0px solid black;"></th>
+            <th style="border-top:0px solid black;"></th>
+            <th style="border-top:0px solid black;"></th>
+            <th style="border-top:0px solid black;"></th>
+            <th style="border-top:0px solid black;"></th>
+            <th style="border-top:0px solid black;"></th>
+            <th style="border:1px solid black;">
+                <p>%</p>
+            </th>
+            <th style="border:1px solid black;">
+                <p>Amt</p>
+            </th>
+            <th style="border:1px solid black;">
+                <p>%</p>
+            </th>
+            <th style="border:1px solid black;">
+                <p>Amt</p>
+            </th>
+            
+        </tr>
+        {{#each orderItemDetails}}
+        
+        <tr>
+            <td><p>{{ this.index }}</p></td>
+            <td id="item-description-data"><span>{{this.productId.system_listing_name}}</span></td>
+            <td><p>{{this.productId.hsn_code}}</p></td>
+            <td><p>{{this.quantity}}.00 Pcs</p></td>
+            <td><p>{{this.productId.mrp}}</p></td>
+            <td><p>0%</p></td>
+            <td><p>{{this.cgstPer}}%</p></td>
+            <td><p>{{this.cgstAmt}}</p></td>
+            <td><p>{{this.cgstPer}}%</p></td>
+            <td><p>{{this.sgstAmt}}</p></td>
+            <td><p>{{this.price}}</p></td>
+        </tr>
+        {{/each}}
+    </table>
+
+    <div id="amount-in-words">
+        <p class="leftPadding">Total In Words</p>
+        <h4 class="leftPadding" style="font-style: italic;">{{orderSummary.sumInWords}} </h4>
+        
+        <div class="leftPadding" id="customer-greeting">Looking forward for your business</div>
+    </div>
+    <div id="calculationAndSignature">
+        <div id="amount-details">
+            <div id="amount-heading">
+                <p>Sub Total</p>
+                <p>CGST (9%)</p>
+                <p>SGST (9%)</p>
+                <h4>Total</h4>
+            </div>
+            <div id="amount-value">
+                <p>{{orderSummary.priceWithoutGst}}</p>
+                <p>{{orderSummary.cgst9}}</p>
+                <p>{{orderSummary.sgst9}}</p>
+                <h4>{{orderSummary.sum}}</h4>
+            </div>
+        </div>
+        <div id="signature-details">
+            <p id="authorized-signature">authorized signature</p>
+        </div>
+    </div>
+
+</body>
+</html>

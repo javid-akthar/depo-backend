@@ -1,0 +1,8 @@
+[0mGET / [33m404[0m 8.768 ms - 139[0m
+[0mGET /api/v1/products/add [0m-[0m - ms - -[0m
+[0mGET /api/v1/products/add [0m-[0m - ms - -[0m
+[0mGET /api/v1/products/ [32m200[0m 35.975 ms - 2343[0m
+[0mGET /favicon.ico [33m404[0m 5.380 ms - 150[0m
+[0mGET /api/v1/products/ [36m304[0m 14.460 ms - -[0m
+[0mGET /api/v1/products/ [36m304[0m 37.993 ms - -[0m
+[0mGET /api/v1/products/ [32m200[0m 33.691 ms - 2348[0m

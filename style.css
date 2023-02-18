@@ -1,0 +1,41 @@
+* {
+    /* margin: 0px; */
+    padding: 0px;
+    box-sizing: border-box;
+    line-height: 3px;
+  }
+  #company-details {
+    line-height: 1px;
+  }
+  
+  #company-details h3 {
+    line-height: 6px;
+  }
+  
+  #company-details > div {
+    display: inline-block;
+  }
+  
+  #company-logo img {
+    height: 58px;
+  }
+  
+  table {
+    border-collapse: collapse;
+    /* width: 80% */
+  }
+  
+  table,
+  td,
+  th {
+    border: 1px solid black;
+  }
+  
+  #invoice-customer-details > td{
+      width: 50%
+  }
+  
+  #item-description-data{
+      width: 250px;
+      line-height: 19px;
+  }
