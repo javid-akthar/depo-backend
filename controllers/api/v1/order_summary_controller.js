@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const InvoiceNumber = require("../../../models/invoiceNumber");
-const OrderSummary = require("../../../models/OrderSummary");
+const OrderSummary = require("../../../models/orderSummary");
 const pdf = require("pdf-creator-node");
 const fs = require("fs");
 const path = require("path");
