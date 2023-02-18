@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Products = require("../../../models/products");
 const CartItem = require("../../../models/cartItem");
-const OrderSummary = require("../../../models/OrderSummary");
+const OrderSummary = require("../../../models/orderSummary");
 const InvoiceNumber = require("../../../models/invoiceNumber");
 const orderSummaryController = require("./order_summary_controller");
 
